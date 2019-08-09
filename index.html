@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Хрестики Нолики</title>
+    <style>
+        .field {
+            border: 1px solid black;
+            position: absolute;
+        }
+
+        .square {
+            border: 1px solid red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="block">
+    </div>
+    <button class="btn">Stop Square</button>
+    <script>
+        class Field {
+            constructor(width, height, element, classElement) {
+                this.width = width;
+                this.height = height;
+                this.element = element;
+                this.classElement = classElement;
+
+            }
+
+            createSquare() {
+                let element = document.createElement("div");
+                element.style.width = this.width + "px";
+                element.style.height = this.height + "px";
+                element.className = this.classElement;
+                this.element.appendChild(element);
+            }
+
+
+        }
+
+        let field = new Field(100, 100, document.body, "field");
+        field.createSquare();
+
+        class Square extends Field {
+            constructor(width, height, color, element, classElement) {
+                super(width, height, element, classElement);
+                this.color = color;
+            }
+
+            createGoodSquare() {
+                super.createSquare();
+                document.querySelector(".square").style.top = document.querySelector(".square").offsetTop;
+                document.querySelector(".square").style.left = document.querySelector(".square").offsetLeft;
+                this.squareElement = document.querySelector(".square");
+            }
+
+            moveSquare() {
+                let i = 0;
+                this.timer = setInterval(() => {
+                    if (i === "") {
+                        this.stopSquare();
+                    }
+                    
+                    if (this.randomNumber() === 1) {
+                        let number = this.squareElement.offsetTop + this.height;
+
+                        if (this.isCheckEndField(number)) {
+                            console.log("stop");
+                            this.stopSquare();
+                        } else {
+                            this.squareElement.style.top = number + "px";
+                        }
+                        
+                    } else {
+                        let number = this.squareElement.offsetLeft + this.width;
+
+                        if (this.isCheckEndField(number)) {
+                            console.log("stop");
+                            this.stopSquare();
+                        } else {
+                            this.squareElement.style.left = number + "px";
+                        }
+                    }
+                    i++;
+
+                }, 1000)
+
+            }
+
+            stopSquare() {
+                clearInterval(this.timer);
+            }
+            
+            randomNumber () {
+                return Math.floor(Math.random() * 2);
+            }
+
+            isCheckEndField (number) {
+                return   (number >= field.width ||  number >= field.height)           
+            }
+        }
+
+        let squareGood = new Square(10, 10, "red", document.querySelector(".field"), "square");
+        console.log(squareGood.createGoodSquare());
+        squareGood.moveSquare();
+
+    </script>
+</body>
+
+</html>
