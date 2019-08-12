@@ -1,0 +1,11 @@
+.field {
+    border: 1px solid black;
+    position: absolute;
+}
+
+.square {
+    background: plum;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
